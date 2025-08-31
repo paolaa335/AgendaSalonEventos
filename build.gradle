@@ -4,6 +4,8 @@ plugins {
     id 'org.springframework.boot' version '3.5.5'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'org.jetbrains.kotlin.plugin.jpa' version '1.9.25'
+    id "org.sonarqube" version "6.3.1.5724"
+    id "jacoco"
 }
 
 group = 'co.edu.uniajc'
@@ -54,11 +56,6 @@ allOpen {
     annotation 'jakarta.persistence.Embeddable'
 }
 
-
-plugins {
-    id "org.sonarqube" version "6.3.1.5724"
-}
-
 sonar {
     properties {
         property "sonar.projectKey", "paolaa335_AgendaSalonEventos"
@@ -66,5 +63,32 @@ sonar {
     }
 }
 
+// ==================== JACOCO CONFIGURATION ====================
+jacoco {
+    toolVersion = "0.8.12"
+    reportsDirectory = layout.buildDirectory.dir("reports/jacoco")
+}
 
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
+    
+    reports {
+        xml.required = true
+        csv.required = false
+        html.required = true
+        html.outputLocation = layout.buildDirectory.dir("reports/jacoco/html")
+    }
+}
 
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.5 // 50% de cobertura mínimo
+            }
+        }
+    }
+}
+
+check.dependsOn jacocoTestCoverageVerification
+// ==================== END JACOCO CONFIGURATION ====================

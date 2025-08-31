@@ -57,13 +57,7 @@ allOpen {
 
 plugins {
     id "org.sonarqube" version "6.3.1.5724"
-}
 
-sonar {
-    properties {
-        property "sonar.projectKey", "paolaa335_AgendaSalonEventos"
-        property "sonar.organization", "innovapro123"
-    }
 }
 
 

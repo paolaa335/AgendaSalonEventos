@@ -1,10 +1,8 @@
 package co.edu.uniajc.AgendaSalonEventos.repository
 
-import co.edu.uniajc.AgendaSalonEventos.model.Usuario
+import co.edu.uniajc.AgendaSalonEventos.model.Salon
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface UsuarioRepository : JpaRepository<Usuario, Long> {
-    fun findByEmail(email: String): Usuario?
-}
+interface SalonRepository : JpaRepository<Salon, Long>

@@ -3,7 +3,7 @@ package co.edu.uniajc.AgendaSalonEventos.model
 import jakarta.persistence.*
 
 @Entity
-data class Usuario(
+data class Salon(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
@@ -11,6 +11,9 @@ data class Usuario(
     @Column(nullable = false)
     val nombre: String,
 
-    @Column(nullable = false, unique = true)
-    val email: String
+    @Column(nullable = false)
+    val capacidad: Int,
+
+    @Column(nullable = false)
+    val ubicacion: String
 )

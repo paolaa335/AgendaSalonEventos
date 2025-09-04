@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS salon (
   creado_en      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   actualizado_en TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (salon_id),
-  -- clave única IN-LINE (así evitamos CREATE INDEX aparte)
+  -- clave única IN-LINE
   UNIQUE KEY ux_salon_nombre_direccion (nombre, direccion),
   CHECK (capacidad > 0),
   CHECK (precio_base >= 0)

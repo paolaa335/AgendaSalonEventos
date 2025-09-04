@@ -1,3 +1,4 @@
+-- V1: Tabla SALON (MySQL)
 CREATE TABLE IF NOT EXISTS salon (
   salon_id       BIGINT NOT NULL AUTO_INCREMENT,
   nombre         VARCHAR(250) NOT NULL,
@@ -7,8 +8,9 @@ CREATE TABLE IF NOT EXISTS salon (
   activo         TINYINT(1) NOT NULL DEFAULT 1,
   creado_en      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   actualizado_en TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (salon_id)
+  PRIMARY KEY (salon_id),
+  -- clave única IN-LINE (así evitamos CREATE INDEX aparte)
+  UNIQUE KEY ux_salon_nombre_direccion (nombre, direccion),
+  CHECK (capacidad > 0),
+  CHECK (precio_base >= 0)
 );
-
-CREATE UNIQUE INDEX IF NOT EXISTS ux_salon_nombre_direccion
-  ON salon (nombre, direccion);

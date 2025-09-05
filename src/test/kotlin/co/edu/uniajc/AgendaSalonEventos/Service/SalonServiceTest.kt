@@ -27,7 +27,7 @@ class SalonServiceTest {
     }
 
     @Test
-    fun `When_CreateSalon_Expect_CreateSalon_In_DB`() {
+    fun `CreateSalon_In_DB`() {
         // Arrange
         val salon = Salon(
             id = 1L,
@@ -49,7 +49,7 @@ class SalonServiceTest {
     }
 
     @Test
-    fun `When_FindById_Expect_Return_Salon`() {
+    fun `FindById_Return_Salon`() {
         // Arrange
         val id = 10L
         val salon = Salon(

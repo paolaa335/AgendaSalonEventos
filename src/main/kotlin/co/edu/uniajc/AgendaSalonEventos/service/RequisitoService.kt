@@ -1,4 +1,4 @@
 package co.edu.uniajc.AgendaSalonEventos.service
 
-class AuthService {
+class RequisitoService {
 }

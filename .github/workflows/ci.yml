@@ -32,14 +32,3 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: https://sonarcloud.io
-naming:
-  TestFunctionNaming:
-    active: true
-    # Permite nombres con backticks
-    functionPattern: '^([a-z][a-zA-Z0-9]*|`.*`)$'
-  FunctionNaming:
-    ignoreAnnotated:
-      - 'Test'
-
-
-

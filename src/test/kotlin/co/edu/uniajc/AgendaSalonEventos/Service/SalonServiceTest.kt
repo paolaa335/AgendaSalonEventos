@@ -27,7 +27,7 @@ class SalonServiceTest {
     }
 
     @Test
-    fun `CreateSalon_In_DB`() {
+    fun `Expect_CreateSalon_In_DB`() {
         // Arrange
         val salon = Salon(
             id = 1L,

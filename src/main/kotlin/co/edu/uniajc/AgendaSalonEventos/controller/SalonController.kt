@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/salon") // mismo estilo simple del profe (sin /api)
+@RequestMapping("/salon")
 class SalonController @Autowired constructor(
     private val salonService: SalonService
 ) {
@@ -38,7 +38,6 @@ class SalonController @Autowired constructor(
         return salonService.findAllSalonesByNombre(name)
     }
 
-    // análogo a /all/age del profe; aquí usamos capacidad
     @GetMapping(path = arrayOf("/all/capacidad"))
     fun findAllSalonByCapacidad(@RequestParam(name = "capacidad") capacidad: Int): List<Salon> {
         return salonService.findAllSalonesByCapacidad(capacidad)

@@ -6,6 +6,7 @@ plugins {
     id 'org.jetbrains.kotlin.plugin.jpa' version '1.9.25'
     id "org.sonarqube" version "6.3.1.5724"
     id 'jacoco'
+    id("org.flywaydb.flyway") version "11.7.2"
 }
 
 group = 'co.edu.uniajc'
@@ -69,6 +70,11 @@ jacocoTestReport {
 }
 
 
+flyway {
+    url = "jdbc:mysql://localhost:3306/agendadb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+    user = "innovapro"
+    password = "api123"
+}
 
 
 

@@ -13,4 +13,5 @@ CREATE TABLE IF NOT EXISTS salon (
   UNIQUE KEY ux_salon_nombre_direccion (nombre, direccion),
   CHECK (capacidad > 0),
   CHECK (precio_base >= 0)
+
 );

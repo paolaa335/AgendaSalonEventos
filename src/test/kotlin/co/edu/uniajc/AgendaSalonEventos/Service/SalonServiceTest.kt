@@ -28,7 +28,7 @@ class SalonServiceTest {
 
     @Test
     fun `Expect_CreateSalon_In_DB`() {
-        // Arrange
+
         val salon = Salon(
             id = 1L,
             nombre = "Salón Principal",
@@ -40,17 +40,17 @@ class SalonServiceTest {
 
         given(salonRepositoryMock.save(salon)).willReturn(salon)
 
-        // Act
+
         val creado = salonService.createSalon(salon)
 
-        // Assert
+
         assertEquals(1L, creado.id)
         assertEquals("Salón Principal", creado.nombre)
     }
 
     @Test
     fun `FindById_Return_Salon`() {
-        // Arrange
+
         val id = 10L
         val salon = Salon(
             id = id,
@@ -62,10 +62,10 @@ class SalonServiceTest {
         )
         given(salonRepositoryMock.findById(id)).willReturn(Optional.of(salon))
 
-        // Act
+
         val encontrado = salonService.findById(id).orElseThrow()
 
-        // Assert
+
         assertEquals(id, encontrado.id)
         assertEquals("Salón VIP", encontrado.nombre)
     }

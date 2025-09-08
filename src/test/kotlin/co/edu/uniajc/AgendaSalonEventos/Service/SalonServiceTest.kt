@@ -1,8 +1,8 @@
-package co.edu.uniajc.AgendaSalonEventos.Service
+package co.edu.uniajc.AgendaSalonEventos.service
 
+import co.edu.uniajc.AgendaSalonEventos.service.SalonService
 import co.edu.uniajc.AgendaSalonEventos.model.Salon
 import co.edu.uniajc.AgendaSalonEventos.repository.SalonRepository
-import co.edu.uniajc.AgendaSalonEventos.service.SalonService
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

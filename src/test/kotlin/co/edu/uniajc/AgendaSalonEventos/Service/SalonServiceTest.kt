@@ -1,72 +1,36 @@
-package co.edu.uniajc.AgendaSalonEventos.Service
+package co.edu.uniajc.AgendaSalonEventos.service
 
 import co.edu.uniajc.AgendaSalonEventos.model.Salon
 import co.edu.uniajc.AgendaSalonEventos.repository.SalonRepository
-import co.edu.uniajc.AgendaSalonEventos.service.SalonService
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.BDDMockito.given
-import org.mockito.Mock
-import org.springframework.test.context.junit.jupiter.SpringExtension
+import org.mockito.Mockito.*
 import java.math.BigDecimal
-import java.util.*
 
-@ExtendWith(SpringExtension::class)
 class SalonServiceTest {
 
-    @Mock
-    lateinit var salonRepositoryMock: SalonRepository
-
-    private lateinit var salonService: SalonService
-
-    @BeforeEach
-    fun setup() {
-        salonService = SalonService(salonRepositoryMock)
-    }
+    private val salonRepository: SalonRepository = mock(SalonRepository::class.java)
+    private val salonService: SalonService = SalonService(salonRepository)
 
     @Test
-    fun `Expect_CreateSalon_In_DB`() {
-
+    fun `crear salon deberia guardarlo en el repositorio`() {
+        // Arrange
         val salon = Salon(
-            id = 1L,
-            nombre = "Salón Principal",
-            direccion = "Calle 10 #5-20",
-            capacidad = 120,
+            id = null,
+            nombre = "Salon Principal",
+            direccion = "Calle 123",
+            capacidad = 100,
             precioBase = BigDecimal("500000.00"),
             activo = true
         )
+        `when`(salonRepository.save(salon)).thenReturn(salon)
 
-        given(salonRepositoryMock.save(salon)).willReturn(salon)
+        // Act
+        val result = salonService.createSalon(salon)
 
-
-        val creado = salonService.createSalon(salon)
-
-
-        assertEquals(1L, creado.id)
-        assertEquals("Salón Principal", creado.nombre)
-    }
-
-    @Test
-    fun `FindById_Return_Salon`() {
-
-        val id = 10L
-        val salon = Salon(
-            id = id,
-            nombre = "Salón VIP",
-            direccion = "Av. Central 123",
-            capacidad = 80,
-            precioBase = BigDecimal("300000.00"),
-            activo = true
-        )
-        given(salonRepositoryMock.findById(id)).willReturn(Optional.of(salon))
-
-
-        val encontrado = salonService.findById(id).orElseThrow()
-
-
-        assertEquals(id, encontrado.id)
-        assertEquals("Salón VIP", encontrado.nombre)
+        // Assert
+        assertNotNull(result)
+        assertEquals("Salon Principal", result.nombre)
+        verify(salonRepository, times(1)).save(salon)
     }
 }

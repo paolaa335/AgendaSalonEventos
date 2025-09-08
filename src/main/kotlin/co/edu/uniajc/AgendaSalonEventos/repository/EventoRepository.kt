@@ -1,4 +1,8 @@
 package co.edu.uniajc.AgendaSalonEventos.repository
 
-class EventoRepository {
-}
+import co.edu.uniajc.AgendaSalonEventos.model.Evento
+import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.stereotype.Repository
+
+@Repository
+interface EventoRepository : JpaRepository<Evento, Long>

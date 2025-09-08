@@ -1,15 +1,35 @@
 openapi: 3.0.1
 info:
-  title: OpenAPI definition
-  version: v0
+  title: Agenda de Salones de Eventos API
+  description: "API para gestionar salones, reservas, eventos y autenticación"
+  contact:
+    name: InnovaPro
+    email: iyate@estudiante.uniajc.edu.co
+  version: v1
 servers:
 - url: http://localhost:8080
   description: Generated server url
+security:
+- bearerAuth: []
+tags:
+- name: Reservas
+  description: Gestión de reservas de salones de eventos
+- name: Salones
+  description: Gestión de salones de eventos
+- name: Auth
+  description: Autenticación y gestión de usuarios
+- name: Eventos
+  description: Gestión de eventos y actividades
+- name: Home
+  description: Información general y estado de la API
 paths:
   /api/salones:
     get:
       tags:
-      - salon-controller
+      - Salones
+      summary: Listar salones
+      description: Obtiene todos los salones disponibles con filtros opcionales por
+        capacidad y disponibilidad
       operationId: listarSalones
       parameters:
       - name: disponible
@@ -25,7 +45,7 @@ paths:
           format: int32
       responses:
         "200":
-          description: OK
+          description: Listado de salones obtenido correctamente
           content:
             '*/*':
               schema:
@@ -34,7 +54,9 @@ paths:
                   $ref: "#/components/schemas/Salon"
     post:
       tags:
-      - salon-controller
+      - Salones
+      summary: Crear salón
+      description: Registra un nuevo salón en el sistema
       operationId: crearSalon
       requestBody:
         content:
@@ -43,8 +65,14 @@ paths:
               $ref: "#/components/schemas/Salon"
         required: true
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Salón creado correctamente
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Datos de entrada inválidos
           content:
             '*/*':
               schema:
@@ -52,11 +80,13 @@ paths:
   /api/reservas:
     get:
       tags:
-      - reserva-controller
+      - Reservas
+      summary: Listar reservas
+      description: Devuelve el listado completo de reservas
       operationId: listarReservas
       responses:
         "200":
-          description: OK
+          description: Listado de reservas obtenido correctamente
           content:
             '*/*':
               schema:
@@ -65,7 +95,9 @@ paths:
                   $ref: "#/components/schemas/Reserva"
     post:
       tags:
-      - reserva-controller
+      - Reservas
+      summary: Crear reserva
+      description: Registra una nueva reserva en el sistema
       operationId: crearReserva
       requestBody:
         content:
@@ -74,8 +106,14 @@ paths:
               $ref: "#/components/schemas/Reserva"
         required: true
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Reserva creada correctamente
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Datos de entrada inválidos
           content:
             '*/*':
               schema:
@@ -83,7 +121,10 @@ paths:
   /api/eventos:
     get:
       tags:
-      - evento-controller
+      - Eventos
+      summary: Listar eventos
+      description: "Retorna la lista completa de eventos disponibles, con filtros\
+        \ opcionales por lugar o fecha"
       operationId: listarEventos
       parameters:
       - name: lugar
@@ -98,7 +139,7 @@ paths:
           type: string
       responses:
         "200":
-          description: OK
+          description: Listado de eventos obtenido correctamente
           content:
             '*/*':
               schema:
@@ -107,7 +148,10 @@ paths:
                   $ref: "#/components/schemas/Evento"
     post:
       tags:
-      - evento-controller
+      - Eventos
+      summary: Crear evento
+      description: Permite crear un nuevo evento. Se valida que los campos principales
+        no estén vacíos
       operationId: crearEvento
       requestBody:
         content:
@@ -116,8 +160,14 @@ paths:
               $ref: "#/components/schemas/Evento"
         required: true
       responses:
-        "200":
-          description: OK
+        "400":
+          description: Datos de evento incompletos o inválidos
+          content:
+            '*/*':
+              schema:
+                type: object
+        "201":
+          description: Evento creado correctamente
           content:
             '*/*':
               schema:
@@ -125,55 +175,65 @@ paths:
   /api/auth/register:
     post:
       tags:
-      - auth-controller
+      - Auth
+      summary: Registrar usuario
+      description: Crea una nueva cuenta de usuario
       operationId: register
       requestBody:
         content:
           application/json:
             schema:
-              type: object
-              additionalProperties:
-                type: string
+              $ref: "#/components/schemas/UsuarioDTO"
         required: true
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Usuario creado correctamente
           content:
             '*/*':
               schema:
                 type: object
-                additionalProperties:
-                  type: object
+        "400":
+          description: Datos inválidos o usuario ya existe
+          content:
+            '*/*':
+              schema:
+                type: object
   /api/auth/login:
     post:
       tags:
-      - auth-controller
+      - Auth
+      summary: Login
+      description: Autentica un usuario y devuelve token simulado
       operationId: login
       requestBody:
         content:
           application/json:
             schema:
-              type: object
-              additionalProperties:
-                type: string
+              $ref: "#/components/schemas/LoginRequest"
         required: true
       responses:
         "200":
-          description: OK
+          description: Autenticación exitosa
           content:
             '*/*':
               schema:
                 type: object
-                additionalProperties:
-                  type: object
+        "401":
+          description: Credenciales inválidas
+          content:
+            '*/*':
+              schema:
+                type: object
   /api:
     get:
       tags:
-      - home-controller
+      - Home
+      summary: Información base
+      description: "Mensaje de bienvenida, versión y lista de endpoints disponibles"
       operationId: home
       responses:
         "200":
-          description: OK
+          description: Información obtenida correctamente
           content:
             '*/*':
               schema:
@@ -183,7 +243,9 @@ paths:
   /api/salones/{id}:
     get:
       tags:
-      - salon-controller
+      - Salones
+      summary: Obtener salón por ID
+      description: Devuelve un salón específico según su identificador
       operationId: obtenerSalon
       parameters:
       - name: id
@@ -194,14 +256,22 @@ paths:
           format: int64
       responses:
         "200":
-          description: OK
+          description: Salón encontrado
+          content:
+            '*/*':
+              schema:
+                type: object
+        "404":
+          description: Salón no encontrado
           content:
             '*/*':
               schema:
                 type: object
     delete:
       tags:
-      - salon-controller
+      - Salones
+      summary: Eliminar salón
+      description: Elimina un salón según su identificador
       operationId: eliminarSalon
       parameters:
       - name: id
@@ -212,7 +282,15 @@ paths:
           format: int64
       responses:
         "200":
-          description: OK
+          description: Salón eliminado correctamente
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        "404":
+          description: Salón no encontrado
           content:
             '*/*':
               schema:
@@ -222,7 +300,9 @@ paths:
   /api/reservas/{id}:
     get:
       tags:
-      - reserva-controller
+      - Reservas
+      summary: Obtener reserva por ID
+      description: Devuelve una reserva específica por su identificador
       operationId: obtenerReserva
       parameters:
       - name: id
@@ -233,14 +313,22 @@ paths:
           format: int64
       responses:
         "200":
-          description: OK
+          description: Reserva encontrada
+          content:
+            '*/*':
+              schema:
+                type: object
+        "404":
+          description: Reserva no encontrada
           content:
             '*/*':
               schema:
                 type: object
     delete:
       tags:
-      - reserva-controller
+      - Reservas
+      summary: Eliminar reserva
+      description: Elimina una reserva por su identificador
       operationId: eliminarReserva
       parameters:
       - name: id
@@ -251,7 +339,15 @@ paths:
           format: int64
       responses:
         "200":
-          description: OK
+          description: Reserva eliminada correctamente
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        "404":
+          description: Reserva no encontrada
           content:
             '*/*':
               schema:
@@ -261,7 +357,9 @@ paths:
   /api/eventos/{id}:
     get:
       tags:
-      - evento-controller
+      - Eventos
+      summary: Obtener evento por ID
+      description: Retorna un evento específico de acuerdo con el identificador solicitado
       operationId: obtenerEvento
       parameters:
       - name: id
@@ -272,14 +370,22 @@ paths:
           format: int64
       responses:
         "200":
-          description: OK
+          description: Evento encontrado
+          content:
+            '*/*':
+              schema:
+                type: object
+        "404":
+          description: Evento no encontrado
           content:
             '*/*':
               schema:
                 type: object
     delete:
       tags:
-      - evento-controller
+      - Eventos
+      summary: Eliminar evento
+      description: Elimina un evento según su identificador
       operationId: eliminarEvento
       parameters:
       - name: id
@@ -289,14 +395,38 @@ paths:
           type: integer
           format: int64
       responses:
-        "200":
-          description: OK
+        "404":
+          description: Evento no encontrado
           content:
             '*/*':
               schema:
                 type: object
                 additionalProperties:
                   type: string
+        "200":
+          description: Evento eliminado correctamente
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+  /api/auth/usuarios:
+    get:
+      tags:
+      - Auth
+      summary: Listar usuarios (demo)
+      description: Devuelve lista de usuarios sin contraseñas
+      operationId: listarUsuarios
+      responses:
+        "200":
+          description: Listado de usuarios
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UsuarioDTO"
 components:
   schemas:
     Salon:
@@ -364,3 +494,33 @@ components:
         capacidad:
           type: integer
           format: int32
+    UsuarioDTO:
+      required:
+      - email
+      - nombre
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+    LoginRequest:
+      required:
+      - email
+      - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

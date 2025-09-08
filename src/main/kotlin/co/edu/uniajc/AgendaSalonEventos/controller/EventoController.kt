@@ -3,6 +3,12 @@ package co.edu.uniajc.AgendaSalonEventos.controller
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
+// Swagger / OpenAPI
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.tags.Tag
+
 // Definición de la entidad simulada "Evento"
 data class Evento(
     val id: Long,
@@ -17,6 +23,7 @@ data class Evento(
  * Expone endpoints REST que permiten listar, obtener, crear y eliminar eventos.
  * Actualmente, los datos son simulados (no conectados a base de datos).
  */
+@Tag(name = "Eventos", description = "Gestión de eventos y actividades")
 @RestController
 @RequestMapping("/api/eventos")
 class EventoController {
@@ -28,10 +35,12 @@ class EventoController {
         Evento(3, "Reunión Empresarial", "2025-10-01", "Sala Ejecutiva", 30)
     )
 
-    /**
-     * GET /api/eventos
-     * Retorna la lista completa de eventos disponibles, con filtros opcionales por lugar o fecha.
-     */
+    @Operation(summary = "Listar eventos", description = "Retorna la lista completa de eventos disponibles, con filtros opcionales por lugar o fecha")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Listado de eventos obtenido correctamente")
+        ]
+    )
     @GetMapping
     fun listarEventos(
         @RequestParam(required = false) lugar: String?,
@@ -43,10 +52,13 @@ class EventoController {
         }
     }
 
-    /**
-     * GET /api/eventos/{id}
-     * Retorna un evento específico de acuerdo con el identificador solicitado.
-     */
+    @Operation(summary = "Obtener evento por ID", description = "Retorna un evento específico de acuerdo con el identificador solicitado")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Evento encontrado"),
+            ApiResponse(responseCode = "404", description = "Evento no encontrado")
+        ]
+    )
     @GetMapping("/{id}")
     fun obtenerEvento(@PathVariable id: Long): ResponseEntity<Any> {
         val evento = eventos.find { it.id == id }
@@ -57,10 +69,13 @@ class EventoController {
         }
     }
 
-    /**
-     * POST /api/eventos
-     * Permite crear un nuevo evento. Se valida que los campos principales no estén vacíos.
-     */
+    @Operation(summary = "Crear evento", description = "Permite crear un nuevo evento. Se valida que los campos principales no estén vacíos")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "201", description = "Evento creado correctamente"),
+            ApiResponse(responseCode = "400", description = "Datos de evento incompletos o inválidos")
+        ]
+    )
     @PostMapping
     fun crearEvento(@RequestBody nuevoEvento: Evento): ResponseEntity<Any> {
         if (nuevoEvento.nombre.isBlank() || nuevoEvento.lugar.isBlank() || nuevoEvento.capacidad <= 0) {
@@ -72,10 +87,13 @@ class EventoController {
         return ResponseEntity.status(201).body(eventoConId)
     }
 
-    /**
-     * DELETE /api/eventos/{id}
-     * Elimina un evento según su identificador, con respuesta clara si no se encuentra.
-     */
+    @Operation(summary = "Eliminar evento", description = "Elimina un evento según su identificador")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Evento eliminado correctamente"),
+            ApiResponse(responseCode = "404", description = "Evento no encontrado")
+        ]
+    )
     @DeleteMapping("/{id}")
     fun eliminarEvento(@PathVariable id: Long): ResponseEntity<Map<String, String>> {
         val eliminado = eventos.removeIf { it.id == id }

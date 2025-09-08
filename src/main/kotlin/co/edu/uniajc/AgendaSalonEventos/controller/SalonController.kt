@@ -3,6 +3,12 @@ package co.edu.uniajc.AgendaSalonEventos.controller
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
+// Swagger / OpenAPI
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.tags.Tag
+
 data class Salon(
     val id: Long,
     val nombre: String,
@@ -11,6 +17,7 @@ data class Salon(
     val disponible: Boolean
 )
 
+@Tag(name = "Salones", description = "Gestión de salones de eventos")
 @RestController
 @RequestMapping("/api/salones")
 class SalonController {
@@ -22,7 +29,12 @@ class SalonController {
         Salon(3, "Sala Ejecutiva", 30, "Piso 3", true)
     )
 
-    // GET /api/salones → lista salones con filtros opcionales
+    @Operation(summary = "Listar salones", description = "Obtiene todos los salones disponibles con filtros opcionales por capacidad y disponibilidad")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Listado de salones obtenido correctamente")
+        ]
+    )
     @GetMapping
     fun listarSalones(
         @RequestParam(required = false) disponible: Boolean?,
@@ -34,7 +46,13 @@ class SalonController {
         }
     }
 
-    // GET /api/salones/{id} → devuelve salón específico
+    @Operation(summary = "Obtener salón por ID", description = "Devuelve un salón específico según su identificador")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Salón encontrado"),
+            ApiResponse(responseCode = "404", description = "Salón no encontrado")
+        ]
+    )
     @GetMapping("/{id}")
     fun obtenerSalon(@PathVariable id: Long): ResponseEntity<Any> {
         val salon = salones.find { it.id == id }
@@ -45,7 +63,13 @@ class SalonController {
         }
     }
 
-    // POST /api/salones → crea un salón con validación
+    @Operation(summary = "Crear salón", description = "Registra un nuevo salón en el sistema")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "201", description = "Salón creado correctamente"),
+            ApiResponse(responseCode = "400", description = "Datos de entrada inválidos")
+        ]
+    )
     @PostMapping
     fun crearSalon(@RequestBody nuevoSalon: Salon): ResponseEntity<Any> {
         if (nuevoSalon.nombre.isBlank() || nuevoSalon.capacidad <= 0 || nuevoSalon.ubicacion.isBlank()) {
@@ -57,7 +81,13 @@ class SalonController {
         return ResponseEntity.status(201).body(salonConId)
     }
 
-    // DELETE /api/salones/{id} → elimina un salón
+    @Operation(summary = "Eliminar salón", description = "Elimina un salón según su identificador")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Salón eliminado correctamente"),
+            ApiResponse(responseCode = "404", description = "Salón no encontrado")
+        ]
+    )
     @DeleteMapping("/{id}")
     fun eliminarSalon(@PathVariable id: Long): ResponseEntity<Map<String, String>> {
         val eliminado = salones.removeIf { it.id == id }

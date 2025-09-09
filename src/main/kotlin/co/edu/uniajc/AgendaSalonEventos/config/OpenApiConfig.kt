@@ -20,7 +20,6 @@ class OpenApiConfig {
             .description("API para gestionar salones, reservas, eventos y autenticación")
             .contact(Contact().name("InnovaPro").email("iyate@estudiante.uniajc.edu.co"))
 
-        // Security scheme JWT (activar si usan protección con Bearer token)
         val securityScheme = SecurityScheme()
             .type(SecurityScheme.Type.HTTP)
             .scheme("bearer")

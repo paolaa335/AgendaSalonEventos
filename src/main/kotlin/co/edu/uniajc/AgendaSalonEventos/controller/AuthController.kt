@@ -13,7 +13,7 @@ data class UsuarioDTO(
     val id: Long? = null,
     val nombre: String,
     val email: String,
-    val password: String? = null // no devolver en respuestas reales
+    val password: String? = null
 )
 
 data class LoginRequest(val email: String, val password: String)
@@ -24,19 +24,12 @@ data class AuthResponse(val token: String, val usuario: UsuarioDTO)
 @RequestMapping("/api/auth")
 class AuthController {
 
-    // Simulación simple de almacenamiento en memoria
     private val usuarios = mutableListOf(
         UsuarioDTO(1, "Admin", "admin@example.com", null)
     )
     private var nextId = 2L
 
-    @Operation(summary = "Registrar usuario", description = "Crea una nueva cuenta de usuario")
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "201", description = "Usuario creado correctamente"),
-            ApiResponse(responseCode = "400", description = "Datos inválidos o usuario ya existe")
-        ]
-    )
+    @Operation(summary = "Registrar usuario")
     @PostMapping("/register")
     fun register(@RequestBody usuario: UsuarioDTO): ResponseEntity<Any> {
         if (usuario.nombre.isBlank() || usuario.email.isBlank()) {
@@ -50,17 +43,10 @@ class AuthController {
         return ResponseEntity.status(201).body(creado.copy(password = null))
     }
 
-    @Operation(summary = "Login", description = "Autentica un usuario y devuelve token simulado")
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Autenticación exitosa"),
-            ApiResponse(responseCode = "401", description = "Credenciales inválidas")
-        ]
-    )
+    @Operation(summary = "Login")
     @PostMapping("/login")
     fun login(@RequestBody req: LoginRequest): ResponseEntity<Any> {
         val user = usuarios.find { it.email.equals(req.email, true) }
-        // Simulación: no hay verificación real de password
         return if (user != null) {
             val token = "token-simulado-${user.id}"
             ResponseEntity.ok(AuthResponse(token, user.copy(password = null)))
@@ -69,12 +55,7 @@ class AuthController {
         }
     }
 
-    @Operation(summary = "Listar usuarios (demo)", description = "Devuelve lista de usuarios sin contraseñas")
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Listado de usuarios")
-        ]
-    )
+    @Operation(summary = "Listar usuarios (demo)")
     @GetMapping("/usuarios")
     fun listarUsuarios(): List<UsuarioDTO> = usuarios.map { it.copy(password = null) }
 }

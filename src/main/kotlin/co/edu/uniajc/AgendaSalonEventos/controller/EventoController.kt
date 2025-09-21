@@ -1,6 +1,6 @@
 package co.edu.uniajc.AgendaSalonEventos.controller
 
-import co.edu.uniajc.AgendaSalonEventos.mode.Evento
+import co.edu.uniajc.AgendaSalonEventos.model.Evento
 import co.edu.uniajc.AgendaSalonEventos.service.EventoService
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses

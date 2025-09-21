@@ -1,0 +1,40 @@
+
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-agenda
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: agendadb
+      MYSQL_USER: innovapro
+      MYSQL_PASSWORD: api123
+    ports:
+      - "3307:3306"             # <- puerto HOST 3307 -> contenedor 3306
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-p$$MYSQL_ROOT_PASSWORD"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: api-agenda
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      DB_USER: innovapro         # opcional, por si los lees en código
+      DB_PASSWORD: api123
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+volumes:
+  db_data:
+

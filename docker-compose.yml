@@ -32,7 +32,7 @@ services:
       DB_USER: innovapro         # opcional, por si los lees en código
       DB_PASSWORD: api123
     ports:
-      - "8080:8080"
+      - "8081:8081"
     restart: unless-stopped
 
 volumes:

@@ -1,4 +1,4 @@
-package co.edu.uniajc.AgendaSalonEventos.mode
+package co.edu.uniajc.AgendaSalonEventos.model
 
 import co.edu.uniajc.AgendaSalonEventos.model.Salon
 import co.edu.uniajc.AgendaSalonEventos.model.Usuario

@@ -1,6 +1,6 @@
 package co.edu.uniajc.AgendaSalonEventos.Service
 
-import co.edu.uniajc.AgendaSalonEventos.mode.Evento
+import co.edu.uniajc.AgendaSalonEventos.model.Evento
 import co.edu.uniajc.AgendaSalonEventos.model.Salon
 import co.edu.uniajc.AgendaSalonEventos.model.Usuario
 import co.edu.uniajc.AgendaSalonEventos.repository.EventoRepository
@@ -77,6 +77,7 @@ class EventoServiceTest {
         val resultado = eventoService.findAllEventos()
 
         assertEquals(1, resultado.size)
+        assertEquals("Conferencia Kotlin", resultado[0].nombre)
 
     }
 }

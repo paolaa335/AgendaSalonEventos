@@ -1,6 +1,6 @@
 package co.edu.uniajc.AgendaSalonEventos.repository
 
-import co.edu.uniajc.AgendaSalonEventos.mode.Evento
+import co.edu.uniajc.AgendaSalonEventos.model.Evento
 
 import co.edu.uniajc.AgendaSalonEventos.model.Usuario
 import co.edu.uniajc.AgendaSalonEventos.model.Salon

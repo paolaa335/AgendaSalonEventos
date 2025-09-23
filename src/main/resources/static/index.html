@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Proyecto Web – Agenda de Salones de Eventos</title>
+    <style>
+        body {
+            font-family: "Times New Roman", serif;
+            line-height: 1.6;
+            margin: 40px;
+            background-color: #f9f9f9;
+        }
+        h1, h2, h3 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-size: 26px;
+        }
+        h2 {
+            font-size: 22px;
+            margin-top: 40px;
+        }
+        h3 {
+            font-size: 18px;
+            margin-top: 25px;
+        }
+        p {
+            text-align: justify;
+        }
+        ul {
+            margin-left: 40px;
+        }
+        .equipo {
+            margin-top: 20px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            font-style: italic;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Proyecto Web: Agenda de Salones de Eventos</h1>
+
+    <h2>Introducción</h2>
+    <p>
+        El proyecto <strong>Agenda de Salones de Eventos</strong> tiene como propósito desarrollar una aplicación web 
+        que permita gestionar reservas de salones para cumpleaños, reuniones y bodas. La aplicación mostrará disponibilidad, 
+        características de cada salón y permitirá la carga de documentos asociados.
+    </p>
+    <p>
+        Actualmente estamos en la fase de <em>arquitectura</em>, donde definimos la estructura del proyecto, 
+        los roles del equipo y la organización de carpetas antes de comenzar a programar.
+    </p>
+
+    <h2>Arquitectura del Proyecto</h2>
+    <p>La arquitectura sigue el patrón multicapa, garantizando separación de responsabilidades, mantenibilidad y escalabilidad:</p>
+    <ul>
+        <li><strong>Controller:</strong> recibe solicitudes HTTP y expone los endpoints REST.</li>
+        <li><strong>Service:</strong> contiene la lógica de negocio y validaciones.</li>
+        <li><strong>Repository:</strong> maneja el acceso y consultas a la base de datos.</li>
+        <li><strong>Model:</strong> define las entidades del dominio (<em>Salón, Reserva, Usuario</em>).</li>
+        <li><strong>Resources:</strong> configuraciones de la aplicación y base de datos.</li>
+        <li><strong>Test:</strong> pruebas unitarias e integración.</li>
+    </ul>
+
+    <h2>Equipo de Trabajo – InnovaPro</h2>
+    <ul class="equipo">
+        <li><strong>Vanessa Alexandra Ruiz Zuñiga</strong> → Líder de equipo / Repositorio</li>
+        <li><strong>Ismael Yate Calderón</strong> → Capa Controller (endpoints REST)</li>
+        <li><strong>Yeison Steven Jimenez Paz</strong> → Capa Service (lógica de negocio)</li>
+        <li><strong>Paola Andrea Mambuscay Muñoz</strong> → Configuración CI/CD y documentación</li>
+        <li><strong>Geovanny Andres Morales Romo</strong> → Pruebas y calidad de software</li>
+    </ul>
+
+    <h2>Tecnologías Seleccionadas</h2>
+    <ul>
+        <li>Lenguaje: Kotlin</li>
+        <li>Framework Backend: Spring Boot con Gradle</li>
+        <li>Base de Datos: MySQL + JPA/Hibernate</li>
+        <li>IDE: IntelliJ IDEA Community</li>
+        <li>CI/CD: GitHub Actions</li>
+        <li>Calidad de Código: SonarCloud</li>
+        <li>Contenedores: Docker + Compose</li>
+        <li>Pruebas: JUnit5 / Mockito</li>
+        <li>Modelado UML: Visual Paradigm Community</li>
+        <li>Repositorio de control de versiones: GitHub</li>
+    </ul>
+
+    <h2>Flujo de Trabajo Colaborativo</h2>
+    <p>El equipo trabaja bajo un flujo <em>Git Flow</em> con ramas por integrante:</p>
+    <ul>
+        <li>feature/ismael_yate</li>
+        <li>feature/yeison_jimenez</li>
+        <li>feature/vanessa_ruiz</li>
+        <li>feature/paola_mambuscay</li>
+        <li>feature/geovanny_morales</li>
+    </ul>
+
+    <h2>Estado Actual</h2>
+    <p>
+        Nuestro equipo ha organizado la arquitectura del sistema y las responsabilidades de cada integrante.  
+        Estamos listos para iniciar la programación siguiendo buenas prácticas de desarrollo, 
+        integración continua y control de calidad.
+    </p>
+
+    <div class="footer">
+        <p><em>InnovaPro – Proyecto Web: Agenda de Salones de Eventos (Fase Arquitectura)</em></p>
+    </div>
+
+</body>
+</html>

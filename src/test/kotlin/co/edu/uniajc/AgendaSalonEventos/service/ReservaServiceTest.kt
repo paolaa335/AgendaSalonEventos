@@ -1,10 +1,10 @@
-package co.edu.uniajc.AgendaSalonEventos.Service
+package co.edu.uniajc.AgendaSalonEventos.service
 
 import co.edu.uniajc.AgendaSalonEventos.model.Reserva
 import co.edu.uniajc.AgendaSalonEventos.model.Salon
 import co.edu.uniajc.AgendaSalonEventos.model.Usuario
+import co.edu.uniajc.AgendaSalonEventos.model.Evento
 import co.edu.uniajc.AgendaSalonEventos.repository.ReservaRepository
-import co.edu.uniajc.AgendaSalonEventos.service.ReservaService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension
 import java.math.BigDecimal
 import java.time.LocalDateTime
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 
 @ExtendWith(MockitoExtension::class)
 class ReservaServiceTest {
@@ -27,6 +28,7 @@ class ReservaServiceTest {
 
     private lateinit var salon: Salon
     private lateinit var usuario: Usuario
+    private lateinit var evento: Evento
     private lateinit var reserva: Reserva
 
     @BeforeEach
@@ -48,16 +50,30 @@ class ReservaServiceTest {
             activo = true
         )
 
-        reserva = Reserva(
+        evento = Evento(
             id = 1L,
-            fecha = LocalDateTime.of(2025, 9, 20, 14, 0),
+            nombre = "Boda de Vanessa",
+            descripcion = "Ceremonia de boda",
+            fechaInicio = LocalDateTime.of(2025, 12, 20, 14, 0),
+            fechaFin = LocalDateTime.of(2025, 12, 20, 18, 0),
             usuario = usuario,
             salon = salon
+        )
+
+        reserva = Reserva(
+            id = 1L,
+            fechaInicio = LocalDateTime.of(2025, 12, 20, 14, 0),
+            fechaFin = LocalDateTime.of(2025, 12, 20, 16, 0),
+            estado = "PENDIENTE",
+            usuario = usuario,
+            salon = salon,
+            evento = evento
         )
     }
 
     @Test
     fun `guardar reserva`() {
+        // SOLUCIÓN: No mockear existsReservaSolapada, dejar que pase la validación
         Mockito.`when`(reservaRepository.save(reserva)).thenReturn(reserva)
 
         val resultado = reservaService.createReserva(reserva)
@@ -76,5 +92,48 @@ class ReservaServiceTest {
         assertEquals(1, resultado.size)
         assertEquals("Vanessa", resultado[0].usuario.nombre)
         assertEquals("Salón Principal", resultado[0].salon.nombre)
+        assertEquals("PENDIENTE", resultado[0].estado)
+    }
+
+    @Test
+    fun `encontrar reserva por id`() {
+        Mockito.`when`(reservaRepository.findById(1L)).thenReturn(java.util.Optional.of(reserva))
+
+        val resultado = reservaService.findById(1L)
+
+        assertNotNull(resultado)
+        assertEquals(1L, resultado!!.id)  // CORRECCIÓN: Eliminar safe call
+        assertEquals("PENDIENTE", resultado.estado)
+    }
+
+    @Test
+    fun `cancelar reserva exitosa`() {
+        Mockito.`when`(reservaRepository.findById(1L)).thenReturn(java.util.Optional.of(reserva))
+        Mockito.`when`(reservaRepository.save(Mockito.any(Reserva::class.java))).thenAnswer { it.arguments[0] as Reserva }
+
+        val resultado = reservaService.cancelarReserva(1L)
+
+        assertEquals("CANCELADA", resultado.estado)
+    }
+
+    @Test
+    fun `confirmar reserva exitosa`() {
+        Mockito.`when`(reservaRepository.findById(1L)).thenReturn(java.util.Optional.of(reserva))
+        Mockito.`when`(reservaRepository.save(Mockito.any(Reserva::class.java))).thenAnswer { it.arguments[0] as Reserva }
+
+        val resultado = reservaService.confirmarReserva(1L)
+
+        assertEquals("CONFIRMADA", resultado.estado)
+    }
+
+    @Test
+    fun `actualizar reserva`() {
+        // SOLUCIÓN: No mockear existsReservaSolapada
+        val reservaActualizada = reserva.copy(estado = "CONFIRMADA")
+        Mockito.`when`(reservaRepository.save(Mockito.any(Reserva::class.java))).thenReturn(reservaActualizada)
+
+        val resultado = reservaService.updateReserva(reservaActualizada)
+
+        assertEquals("CONFIRMADA", resultado.estado)
     }
 }
